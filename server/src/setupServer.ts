@@ -59,8 +59,7 @@ export class ChattyServer {
             const httpServer: http.Server = new http.Server(app);
             this.startHttpServer(httpServer);
         } catch (error) {
-            console.log(error);
-            
+            console.log(error);   
         }
     }
 
