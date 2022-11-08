@@ -25,7 +25,7 @@ export class ChattyServer {
         this.startServer(this.app);
     }
 
-    public securityMiddleware(app: Application): void {
+    private securityMiddleware(app: Application): void {
         app.use(
             cookieSession({
                 name: 'session',
@@ -44,21 +44,29 @@ export class ChattyServer {
         }));
     }
 
-    public standardMiddleware(app: Application): void {
+    private standardMiddleware(app: Application): void {
         app.use(compression());
         app.use(json({ limit: '50mb' }));
         app.use(urlencoded({ extended: true, limit: '50mb' }));
     }
 
-    public routesMiddleware(app: Application): void {}
+    private routesMiddleware(app: Application): void {}
 
-    public globalErrorHandler(app: Application): void {}
+    private globalErrorHandler(app: Application): void {}
 
-    public async startServer(app: Application): Promise<void> {}
+    private async startServer(app: Application): Promise<void> {
+        try {
+            const httpServer: http.Server = new http.Server(app);
+            this.startHttpServer(httpServer);
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
 
-    public createSocketIO(httpServer: http.Server): void {}
+    private createSocketIO(httpServer: http.Server): void {}
 
-    public startHttpServer(httpServer: http.Server): void {
+    private startHttpServer(httpServer: http.Server): void {
         httpServer.listen(SERVER_PORT, () => { 
             console.log(`Server running on port ${SERVER_PORT}`); 
         });
