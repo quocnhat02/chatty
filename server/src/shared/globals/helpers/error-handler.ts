@@ -29,3 +29,12 @@ export abstract class CustomError extends Error {
     };
   }
 }
+
+export class BadRequestError extends CustomError {
+  statusCode = HTTP_STATUS.BAD_REQUEST;
+  status = 'error';
+
+  constructor(message: string) {
+    super(message);
+  }
+}
