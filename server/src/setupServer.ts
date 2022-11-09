@@ -1,19 +1,19 @@
-import { CustomError, IErrorResponse } from './shared/globals/helpers/error-handler';
-import { Application, json, urlencoded, Response, Request, NextFunction } from 'express';
-import http from 'http';
-import cors from 'cors';
-import helmet from 'helmet';
 import hpp from 'hpp';
-import compression from 'compression';
-import cookieSession from 'cookie-session';
-import HTTP_STATUS from 'http-status-codes';
-import { Server } from 'socket.io';
-import { createClient } from 'redis';
-import { createAdapter } from '@socket.io/redis-adapter';
+import cors from 'cors';
+import http from 'http';
+import helmet from 'helmet';
 import Logger from 'bunyan';
 import 'express-async-errors';
 import { config } from './config';
+import { Server } from 'socket.io';
+import { createClient } from 'redis';
+import compression from 'compression';
 import applicationRoutes from './routes';
+import cookieSession from 'cookie-session';
+import HTTP_STATUS from 'http-status-codes';
+import { createAdapter } from '@socket.io/redis-adapter';
+import { CustomError, IErrorResponse } from './shared/globals/helpers/error-handler';
+import { Application, json, urlencoded, Response, Request, NextFunction } from 'express';
 
 const SERVER_PORT = 5000;
 const log: Logger = config.createLogger('server');
@@ -112,5 +112,7 @@ export class ChattyServer {
     });
   }
 
-  private socketIOConnection(io: Server): void {}
+  private socketIOConnection(io: Server): void {
+    log.info('socketIOConnection');
+  }
 }
