@@ -1,7 +1,7 @@
 import HTTP_STATUS from 'http-status-codes';
 
 export interface IErrorResponse {
-  message: String;
+  message: string;
   statusCode: number;
   status: string;
   serializeErrors(): IError;
@@ -25,7 +25,7 @@ export abstract class CustomError extends Error {
     return {
       message: this.message,
       status: this.status,
-      statusCode: this.statusCode,
+      statusCode: this.statusCode
     };
   }
 }
