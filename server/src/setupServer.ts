@@ -70,7 +70,9 @@ export class ChattyServer {
   private async startServer(app: Application): Promise<void> {
     try {
       const httpServer: http.Server = new http.Server(app);
+      const socketIO: Server = await this.createSocketIO(httpServer);
       this.startHttpServer(httpServer);
+      this.socketIOConnection(socketIO);
     } catch (error) {
       console.log(error);
     }
@@ -92,8 +94,12 @@ export class ChattyServer {
   }
 
   private startHttpServer(httpServer: http.Server): void {
+    console.log(`Server has started with process ${process.pid}`);
+
     httpServer.listen(SERVER_PORT, () => {
       console.log(`Server running on port ${SERVER_PORT}`);
     });
   }
+
+  private socketIOConnection(io: Server): void {}
 }
