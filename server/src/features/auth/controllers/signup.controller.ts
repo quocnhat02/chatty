@@ -1,3 +1,4 @@
+import { UploadApiResponse } from 'cloudinary';
 import { ISignUpData } from './../interfaces/auth.interface';
 import { Helpers } from '@global/helpers/helpers';
 import { authService } from '@service/db/auth.service';
@@ -7,6 +8,7 @@ import { Request, Response } from 'express';
 import { joiValidation } from '@global/decorators/joi-validation.decorators';
 import { signupSchema } from '@auth/schemas/signup';
 import { BadRequestError } from '@global/helpers/error-handler';
+import { uploads } from '@global/helpers/cloudinary-upload';
 
 export class SignUp {
   @joiValidation(signupSchema)
@@ -21,6 +23,18 @@ export class SignUp {
     const authObjectId: ObjectId = new ObjectId();
     const userObjectId: ObjectId = new ObjectId();
     const uId = `${Helpers.generateRandomIntegers(12)}`;
+    const authData: IAuthDocument = SignUp.prototype.signupData({
+      _id: authObjectId,
+      uId,
+      username,
+      email,
+      password,
+      avatarColor
+    });
+    const result: UploadApiResponse = (await uploads(avatarImage, `${userObjectId}`, true, true)) as UploadApiResponse;
+    if (!result?.public_id) {
+      throw new BadRequestError('File upload: Error occurred. Try again!');
+    }
   }
 
   private signupData(data: ISignUpData): IAuthDocument {
