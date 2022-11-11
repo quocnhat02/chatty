@@ -12,7 +12,7 @@ export class Helpers {
     return str.toLowerCase();
   }
 
-  static generateRandomIntegers(integerLength: nunmber): number {
+  static generateRandomIntegers(integerLength: number): number {
     const characters = '0123456789';
     let result = ' ';
     const charactersLength = characters.length;
