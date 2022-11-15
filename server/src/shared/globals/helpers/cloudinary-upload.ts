@@ -15,7 +15,11 @@ export function uploads(
         invalidate
       },
       (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
-        error ? resolve(error) : resolve(result);
+        if (error) {
+          resolve(error);
+        } else {
+          resolve(result);
+        }
       }
     );
   });
