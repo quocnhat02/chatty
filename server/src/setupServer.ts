@@ -15,6 +15,8 @@ import cookieSession from 'cookie-session';
 import HTTP_STATUS from 'http-status-codes';
 import 'express-async-errors';
 
+const SERVER_PORT = 5000;
+
 export class ChattyServer {
   private app: Application;
 
@@ -65,5 +67,9 @@ export class ChattyServer {
 
   public createSocketIO(httpServer: http.Server): void {}
 
-  public startHttpServer(httpServer: http.Server): void {}
+  public startHttpServer(httpServer: http.Server): void {
+    httpServer.listen(SERVER_PORT, () => {
+      console.log(`Server running on ${SERVER_PORT}`);
+    });
+  }
 }
