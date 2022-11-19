@@ -63,7 +63,14 @@ export class ChattyServer {
 
   public globalErrorHandler(app: Application): void {}
 
-  public startServer(app: Application): void {}
+  public async startServer(app: Application): Promise<void> {
+    try {
+      const httpServer: http.Server = new http.Server(app);
+      this.startHttpServer(httpServer);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   public createSocketIO(httpServer: http.Server): void {}
 
