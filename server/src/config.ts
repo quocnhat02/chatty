@@ -21,6 +21,14 @@ class Config {
     this.SECRET_KEY_TWO = process.env.DATABASE_URL || '';
     this.CLIENT_URL = process.env.DATABASE_URL || '';
   }
+
+  public validateConfig(): void {
+    for (const [key, value] of Object.entries(this)) {
+      if (value === undefined) {
+        throw new Error(`Configuration ${key} is undefined`);
+      }
+    }
+  }
 }
 
 export const config: Config = new Config();
