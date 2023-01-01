@@ -113,5 +113,7 @@ export class ChattyServer {
     });
   }
 
-  private socketIOConnection(io: Server): void {}
+  private socketIOConnection(io: Server): void {
+    log.info('socketIOConnection');
+  }
 }
