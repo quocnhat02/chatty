@@ -12,4 +12,16 @@ export class Helpers {
   static lowerCase(str: string): string {
     return str.toLowerCase();
   }
+
+  static generateRandomIntegers(integerLength: number): number {
+    const charaters = '0123456789';
+    let result = '';
+    const charactersLength = charaters.length;
+
+    for (let i = 0; i < integerLength; i++) {
+      result += charaters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return parseInt(result, 10);
+  }
 }
