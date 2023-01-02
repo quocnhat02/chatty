@@ -1,3 +1,4 @@
+import HTTP_STATUS from 'http-status-codes';
 import { UploadApiResponse } from 'cloudinary';
 import { ISignUpData } from '@auth/interfaces/auth.interface';
 import { Helpers } from '@global/helpers/helpers';
@@ -36,6 +37,8 @@ export class SignUp {
     if (!result?.public_id) {
       throw new BadRequestError('File upload: Error occurred. Try again!');
     }
+
+    res.status(HTTP_STATUS.CREATED).json({ message: 'User created successfully', authData });
   }
 
   private signupData(data: ISignUpData): IAuthDocument {
