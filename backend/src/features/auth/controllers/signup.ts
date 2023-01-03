@@ -4,7 +4,7 @@ import { ISignUpData } from '@auth/interfaces/auth.interface';
 import { Helpers } from '@global/helpers/helpers';
 import { ObjectId } from 'mongodb';
 import { Request, Response } from 'express';
-import { authService } from '@services/db/auth.service';
+import { authService } from '@service/db/auth.service';
 import { IAuthDocument } from '@auth/interfaces/auth.interface';
 import { joiValidation } from '@global/decorators/joi-validation.decorators';
 import { signupSchema } from '@auth/schemes/signup';
