@@ -7,7 +7,7 @@ import { Request, Response } from 'express';
 import { authService } from '@services/db/auth.service';
 import { IAuthDocument } from '@auth/interfaces/auth.interface';
 import { joiValidation } from '@global/decorators/joi-validation.decorators';
-import { signupSchema } from '@auth/schemas/signup';
+import { signupSchema } from '@auth/schemes/signup';
 import { BadRequestError } from '@global/helpers/error-handler';
 import { uploads } from '@global/helpers/cloudinary-upload';
 
