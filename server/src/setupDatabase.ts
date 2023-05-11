@@ -1,14 +1,13 @@
 import mongoose from 'mongoose';
 import colors from 'colors';
+import { config } from './config';
 
 export default () => {
   const connect = () => {
     mongoose
-      .connect('mongodb://localhost:27017/chattyapp-backend')
+      .connect(`${config.MONGODB_URL}`)
       .then(() => {
-        console.log(
-          colors.bgMagenta('Successfully connected to database.')
-        );
+        console.log(colors.bgMagenta('Successfully connected to database.'));
       })
       .catch((error) => {
         console.log('Error connecting to database', error);
