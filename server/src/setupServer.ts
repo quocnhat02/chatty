@@ -19,6 +19,7 @@ import { createClient } from 'redis';
 import { createAdapter } from '@socket.io/redis-adapter';
 import 'express-async-errors';
 import { config } from './config';
+import applicationRoutes from './routes';
 
 import colors from 'colors';
 
@@ -67,7 +68,9 @@ export class AppServer {
     app.use(urlencoded({ limit: '50mb', extended: true }));
   }
 
-  private routesMiddleware(app: Application): void {}
+  private routesMiddleware(app: Application): void {
+    applicationRoutes(app);
+  }
 
   private globalErrorHandler(app: Application): void {}
 
