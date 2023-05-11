@@ -16,6 +16,8 @@ import cookieSession from 'cookie-session';
 import HTTP_STATUS from 'http-status-codes';
 import 'express-async-errors';
 
+import colors from 'colors';
+
 const SERVER_PORT = 5000;
 
 export class AppServer {
@@ -78,7 +80,9 @@ export class AppServer {
 
   private startHttpServer(httpServer: http.Server): void {
     httpServer.listen(SERVER_PORT, () => {
-      console.log(`Server running on port ${SERVER_PORT}`);
+      console.log(
+        colors.bgYellow(`Server running on port ${SERVER_PORT}`)
+      );
     });
   }
 }
