@@ -50,7 +50,7 @@ export class AppServer {
     app.use(helmet());
     app.use(
       cors({
-        origin: '*',
+        origin: config.CLIENT_URL,
         credentials: true,
         optionsSuccessStatus: 200,
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
