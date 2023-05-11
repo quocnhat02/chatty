@@ -15,6 +15,7 @@ import compression from 'compression';
 import cookieSession from 'cookie-session';
 import HTTP_STATUS from 'http-status-codes';
 import 'express-async-errors';
+import { config } from './config';
 
 import colors from 'colors';
 
@@ -39,9 +40,9 @@ export class AppServer {
     app.use(
       cookieSession({
         name: 'session',
-        keys: ['test1', 'test2'],
+        keys: [config.SECRET_KEY_ONE!, config.SECRET_KEY_TWO!],
         maxAge: 24 * 7 * 3600000,
-        secure: false,
+        secure: config.NODE_ENV !== 'development',
       })
     );
 
@@ -80,9 +81,7 @@ export class AppServer {
 
   private startHttpServer(httpServer: http.Server): void {
     httpServer.listen(SERVER_PORT, () => {
-      console.log(
-        colors.bgYellow(`Server running on port ${SERVER_PORT}`)
-      );
+      console.log(colors.bgYellow(`Server running on port ${SERVER_PORT}`));
     });
   }
 }
