@@ -11,6 +11,7 @@ import http from 'http';
 import cors from 'cors';
 import helmet from 'helmet';
 import hpp from 'hpp';
+import compression from 'compression';
 import cookieSession from 'cookie-session';
 import HTTP_STATUS from 'http-status-codes';
 import 'express-async-errors';
@@ -52,7 +53,11 @@ export class AppServer {
     );
   }
 
-  private standardMiddleware(app: Application): void {}
+  private standardMiddleware(app: Application): void {
+    app.use(compression());
+    app.use(json({ limit: '50mb' }));
+    app.use(urlencoded({ limit: '50mb', extended: true }));
+  }
 
   private routesMiddleware(app: Application): void {}
 
