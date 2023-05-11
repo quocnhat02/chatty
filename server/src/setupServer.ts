@@ -30,7 +30,27 @@ export class AppServer {
     this.startServer(this.app);
   }
 
-  private securityMiddleware(app: Application): void {}
+  private securityMiddleware(app: Application): void {
+    app.use(
+      cookieSession({
+        name: 'session',
+        keys: ['test1', 'test2'],
+        maxAge: 24 * 7 * 3600000,
+        secure: false,
+      })
+    );
+
+    app.use(hpp());
+    app.use(helmet());
+    app.use(
+      cors({
+        origin: '*',
+        credentials: true,
+        optionsSuccessStatus: 200,
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+      })
+    );
+  }
 
   private standardMiddleware(app: Application): void {}
 
