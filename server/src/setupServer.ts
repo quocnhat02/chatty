@@ -65,7 +65,14 @@ export class AppServer {
 
   private globalErrorHandler(app: Application): void {}
 
-  private startServer(app: Application): void {}
+  private async startServer(app: Application): Promise<void> {
+    try {
+      const httpServer: http.Server = new http.Server(app);
+      this.startHttpServer(httpServer);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   private createSocketIO(httpServer: http.Server): void {}
 
