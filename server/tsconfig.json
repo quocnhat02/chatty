@@ -23,9 +23,9 @@
     "paths": {
       "@root/*": ["src/*"],
       "@global/*": ["src/shared/global/*"],
-      "@services/*": ["src/shared/services/*"],
-      "@sockets/*": ["src/shared/sockets/*"],
-      "@workers/*": ["src/shared/workers/*"]
+      "@service/*": ["src/shared/service/*"],
+      "@socket/*": ["src/shared/socket/*"],
+      "@worker/*": ["src/shared/worker/*"]
     }
   }
 }
