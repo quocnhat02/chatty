@@ -1,11 +1,4 @@
-import {
-  Application,
-  json,
-  urlencoded,
-  Response,
-  Request,
-  NextFunction,
-} from 'express';
+import { Application, json, urlencoded, Response, Request, NextFunction } from 'express';
 
 import http from 'http';
 import cors from 'cors';
@@ -19,13 +12,10 @@ import { createClient } from 'redis';
 import { createAdapter } from '@socket.io/redis-adapter';
 import Logger from 'bunyan';
 import 'express-async-errors';
-import { config } from './config';
-import applicationRoutes from './routes';
+import { config } from '@root/config';
+import applicationRoutes from '@root/routes';
 
-import {
-  CustomError,
-  IErrorResponse,
-} from './shared/global/helpers/error-handler';
+import { CustomError, IErrorResponse } from '@global/helpers/error-handler';
 
 const SERVER_PORT = 5000;
 const log: Logger = config.createLogger('server');
@@ -51,7 +41,7 @@ export class AppServer {
         name: 'session',
         keys: [config.SECRET_KEY_ONE!, config.SECRET_KEY_TWO!],
         maxAge: 24 * 7 * 3600000,
-        secure: config.NODE_ENV !== 'development',
+        secure: config.NODE_ENV !== 'development'
       })
     );
 
@@ -62,7 +52,7 @@ export class AppServer {
         origin: config.CLIENT_URL,
         credentials: true,
         optionsSuccessStatus: 200,
-        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
       })
     );
   }
@@ -80,24 +70,17 @@ export class AppServer {
   private globalErrorHandler(app: Application): void {
     app.all('*', (req: Request, res: Response) => {
       res.status(HTTP_STATUS.NOT_FOUND).json({
-        message: `${req.originalUrl} not found`,
+        message: `${req.originalUrl} not found`
       });
     });
 
-    app.use(
-      (
-        error: IErrorResponse,
-        _req: Request,
-        res: Response,
-        next: NextFunction
-      ) => {
-        log.error(error);
-        if (error instanceof CustomError) {
-          return res.status(error.statusCode).json(error.serializeErrors());
-        }
-        next();
+    app.use((error: IErrorResponse, _req: Request, res: Response, next: NextFunction) => {
+      log.error(error);
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json(error.serializeErrors());
       }
-    );
+      next();
+    });
   }
 
   private async startServer(app: Application): Promise<void> {
@@ -115,8 +98,8 @@ export class AppServer {
     const io: Server = new Server(httpServer, {
       cors: {
         origin: config.CLIENT_URL,
-        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-      },
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
+      }
     });
 
     const pubClient = createClient({ url: config.REDIS_URL });
@@ -133,5 +116,7 @@ export class AppServer {
     });
   }
 
-  private socketIOConnections(io: Server): void {}
+  private socketIOConnections(io: Server): void {
+    log.info('socketIOConnections');
+  }
 }
