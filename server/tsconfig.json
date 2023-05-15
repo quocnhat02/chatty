@@ -21,11 +21,12 @@
     "resolveJsonModule": true,
     "plugins": [{ "transform": "typescript-transform-paths" }, { "transform": "typescript-transform-paths", "afterDeclarations": true }],
     "paths": {
-      "@root/*": ["src/*"],
+      "@auth/*": ["src/features/auth/*"],
       "@global/*": ["src/shared/global/*"],
       "@service/*": ["src/shared/service/*"],
       "@socket/*": ["src/shared/socket/*"],
-      "@worker/*": ["src/shared/worker/*"]
+      "@worker/*": ["src/shared/worker/*"],
+      "@root/*": ["src/*"]
     }
   }
 }
