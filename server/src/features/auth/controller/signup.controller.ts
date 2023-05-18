@@ -2,7 +2,7 @@
 import { ObjectId } from 'mongodb';
 import { Request, Response } from 'express';
 import { joiValidation } from '@global/decorator/joi-validation.decorator';
-import { signupSchema } from '@auth/schema/signup';
+import { signupSchema } from '@auth/schema/signup.schema';
 import { IAuthDocument } from '@auth/interface/auth.interface';
 import { authService } from '@service/db/auth.service';
 import { BadRequestError } from '@global/helper/error-handler';
