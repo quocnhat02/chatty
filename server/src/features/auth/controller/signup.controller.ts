@@ -9,6 +9,7 @@ import { BadRequestError } from '@global/helper/error-handler';
 import { Helpers } from '@global/helper/helpers';
 import { UploadApiResponse } from 'cloudinary';
 import { uploads } from '@global/helper/cloudinary-upload';
+import HTTP_STATUS from 'http-status-codes';
 
 export class SignUp {
   @joiValidation(signupSchema)
@@ -37,6 +38,8 @@ export class SignUp {
     if (!result?.public_id) {
       throw new BadRequestError('File upload: Error occurred. Try again!');
     }
+
+    res.status(HTTP_STATUS.CREATED).json({ message: 'User created successfully', authData });
   }
 
   private signupData(data: ISignUpData): IAuthDocument {

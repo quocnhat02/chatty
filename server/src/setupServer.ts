@@ -15,7 +15,7 @@ import 'express-async-errors';
 import { config } from '@root/config';
 import applicationRoutes from '@root/routes';
 
-import { CustomError, IErrorResponse } from '@global/helpers/error-handler';
+import { CustomError, IErrorResponse } from '@root/shared/global/helper/error-handler';
 
 const SERVER_PORT = 5000;
 const log: Logger = config.createLogger('server');
