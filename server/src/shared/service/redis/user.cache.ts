@@ -1,5 +1,10 @@
+import Logger from 'bunyan';
+import { config } from '@root/config';
 import { BaseCache } from '@service/redis/base.cache';
 import { IUserDocument } from '@user/interface/user.interface';
+import { ServerError } from '@global/helper/error-handler';
+
+const log: Logger = config.createLogger('userCache');
 
 export class UserCache extends BaseCache {
   constructor() {
@@ -82,5 +87,17 @@ export class UserCache extends BaseCache {
     ];
 
     const dataToSave: string[] = [...firstList, ...secondList, ...thirdList];
+
+    try {
+      if (!this.client.isOpen) {
+        await this.client.connect();
+      }
+
+      await this.client.ZADD('user', { score: parseInt(userId, 10), value: `${key}` });
+      await this.client.HSET(`users:${key}`, dataToSave);
+    } catch (error) {
+      log.error(error);
+      throw new ServerError('Server error. Try again!');
+    }
   }
 }
