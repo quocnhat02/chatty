@@ -1,5 +1,5 @@
-import { authRoutes } from '@auth/routes/auth.routes';
 import { Application } from 'express';
+import { authRoutes } from '@auth/routes/auth.routes';
 
 const BASE_PATH = '/api/v1';
 

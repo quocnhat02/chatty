@@ -1,19 +1,19 @@
 import { Application, json, urlencoded, Response, Request, NextFunction } from 'express';
 
-import http from 'http';
-import cors from 'cors';
-import helmet from 'helmet';
 import hpp from 'hpp';
-import compression from 'compression';
-import cookieSession from 'cookie-session';
-import HTTP_STATUS from 'http-status-codes';
-import { Server } from 'socket.io';
-import { createClient } from 'redis';
-import { createAdapter } from '@socket.io/redis-adapter';
+import cors from 'cors';
+import http from 'http';
+import helmet from 'helmet';
 import Logger from 'bunyan';
 import 'express-async-errors';
+import { Server } from 'socket.io';
+import { createClient } from 'redis';
+import compression from 'compression';
 import { config } from '@root/config';
+import cookieSession from 'cookie-session';
+import HTTP_STATUS from 'http-status-codes';
 import applicationRoutes from '@root/routes';
+import { createAdapter } from '@socket.io/redis-adapter';
 
 import { CustomError, IErrorResponse } from '@root/shared/global/helper/error-handler';
 
