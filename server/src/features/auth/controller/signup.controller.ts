@@ -3,9 +3,12 @@ import { ObjectId } from 'mongodb';
 import { Request, Response } from 'express';
 import { joiValidation } from '@global/decorator/joi-validation.decorator';
 import { signupSchema } from '@auth/schema/signup.schema';
-import { IAuthDocument } from '@auth/interface/auth.interface';
+import { IAuthDocument, ISignUpData } from '@auth/interface/auth.interface';
 import { authService } from '@service/db/auth.service';
 import { BadRequestError } from '@global/helper/error-handler';
+import { Helpers } from '@global/helper/helpers';
+import { UploadApiResponse } from 'cloudinary';
+import { uploads } from '@global/helper/cloudinary-upload';
 
 export class SignUp {
   @joiValidation(signupSchema)
@@ -16,5 +19,37 @@ export class SignUp {
     if (checkIfUserExist) {
       throw new BadRequestError('Invalid credentials');
     }
+
+    const authObjectId: ObjectId = new ObjectId();
+    const userObjectId: ObjectId = new ObjectId();
+    const uId = `${Helpers.generateRandomIntegers(12)}`;
+    const authData: IAuthDocument = SignUp.prototype.signupData({
+      _id: authObjectId,
+      uId,
+      username,
+      email,
+      password,
+      avatarColor
+    });
+
+    const result: UploadApiResponse = (await uploads(avatarImage, `${userObjectId}`, true, true)) as UploadApiResponse;
+
+    if (!result?.public_id) {
+      throw new BadRequestError('File upload: Error occurred. Try again!');
+    }
+  }
+
+  private signupData(data: ISignUpData): IAuthDocument {
+    const { _id, username, email, uId, password, avatarColor } = data;
+
+    return {
+      _id,
+      uId,
+      username: Helpers.firstLetterUppercase(username),
+      email: Helpers.lowerCase(email),
+      password,
+      avatarColor,
+      createdAt: new Date()
+    } as IAuthDocument;
   }
 }
