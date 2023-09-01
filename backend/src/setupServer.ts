@@ -7,6 +7,13 @@ import {
   NextFunction,
 } from 'express';
 import http from 'http';
+import cors from 'cors';
+import helmet from 'helmet';
+import hpp from 'hpp';
+import cookieSession from 'cookie-session';
+import compression from 'compression';
+import HTTP_STATUS from 'http-status-codes';
+import 'express-async-errors';
 
 export class ServerApplication {
   private app: Application;
@@ -23,9 +30,41 @@ export class ServerApplication {
     this.startServer(this.app);
   }
 
-  private securityMiddleware(app: Application): void {}
+  private securityMiddleware(app: Application): void {
+    app.use(
+      cookieSession({
+        name: 'session',
+        keys: ['test1', 'test2'],
+        maxAge: 24 * 7 * 3600000,
+        secure: false,
+      })
+    );
+    app.use(hpp());
+    app.use(helmet());
+    app.use(
+      cors({
+        origin: '*',
+        credentials: true,
+        optionsSuccessStatus: 200,
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+      })
+    );
+  }
 
-  private standardMiddleware(app: Application): void {}
+  private standardMiddleware(app: Application): void {
+    app.use(compression());
+    app.use(
+      json({
+        limit: '50mb',
+      })
+    );
+    app.use(
+      urlencoded({
+        extended: true,
+        limit: '50mb',
+      })
+    );
+  }
 
   private routesMiddleware(app: Application): void {}
 
