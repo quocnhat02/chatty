@@ -16,6 +16,7 @@ import HTTP_STATUS from 'http-status-codes';
 import { Server } from 'socket.io';
 import { createClient } from 'redis';
 import { createAdapter } from '@socket.io/redis-adapter';
+import Logger from 'bunyan';
 import 'express-async-errors';
 import { config } from './config';
 import applicationRoutes from './routes';
@@ -25,6 +26,7 @@ import {
 } from './shared/global/helpers/error-handler';
 
 const SERVER_PORT = 5000;
+const log: Logger = config.createLogger('server');
 
 export class ServerApplication {
   private app: Application;
@@ -95,7 +97,7 @@ export class ServerApplication {
         res: Response,
         next: NextFunction
       ) => {
-        console.log(err);
+        log.error(err);
         if (err instanceof CustomError) {
           return res.status(err.statusCode).json(err.serializeErrors());
         }
@@ -111,7 +113,7 @@ export class ServerApplication {
       this.startHttpServer(httpServer);
       this.socketIOConnections(socketIO);
     } catch (error) {
-      console.log(error);
+      log.error(error);
     }
   }
 
@@ -132,9 +134,9 @@ export class ServerApplication {
   private socketIOConnections(io: Server): void {}
 
   private startHttpServer(httpServer: http.Server): void {
-    console.log(`Server has started with process ${process.pid}`);
+    log.info(`Server has started with process ${process.pid}`);
     httpServer.listen(SERVER_PORT || 5001, () => {
-      console.log(`Server running on port ${SERVER_PORT}`);
+      log.info(`Server running on port ${SERVER_PORT}`);
     });
   }
 }
