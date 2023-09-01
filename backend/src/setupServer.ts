@@ -1,11 +1,4 @@
-import {
-  Application,
-  json,
-  urlencoded,
-  Response,
-  Request,
-  NextFunction,
-} from 'express';
+import { Application, json, urlencoded, Response, Request, NextFunction } from 'express';
 import http from 'http';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -20,10 +13,7 @@ import Logger from 'bunyan';
 import 'express-async-errors';
 import { config } from './config';
 import applicationRoutes from './routes';
-import {
-  CustomError,
-  IErrorResponse,
-} from './shared/global/helpers/error-handler';
+import { CustomError, IErrorResponse } from './shared/global/helpers/error-handler';
 
 const SERVER_PORT = 5000;
 const log: Logger = config.createLogger('server');
@@ -49,7 +39,7 @@ export class ServerApplication {
         name: 'session',
         keys: [config.SECRET_KEY_ONE!, config.SECRET_KEY_TWO!],
         maxAge: 24 * 7 * 3600000,
-        secure: config.NODE_ENV !== 'development',
+        secure: config.NODE_ENV !== 'development'
       })
     );
     app.use(hpp());
@@ -59,7 +49,7 @@ export class ServerApplication {
         origin: config.CLIENT_URL,
         credentials: true,
         optionsSuccessStatus: 200,
-        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
       })
     );
   }
@@ -68,13 +58,13 @@ export class ServerApplication {
     app.use(compression());
     app.use(
       json({
-        limit: '50mb',
+        limit: '50mb'
       })
     );
     app.use(
       urlencoded({
         extended: true,
-        limit: '50mb',
+        limit: '50mb'
       })
     );
   }
@@ -86,24 +76,17 @@ export class ServerApplication {
   private globalErrorHandler(app: Application): void {
     app.all('*', (req: Request, res: Response, next: NextFunction) => {
       res.status(HTTP_STATUS.NOT_FOUND).json({
-        message: `${req.originalUrl} not found.`,
+        message: `${req.originalUrl} not found.`
       });
     });
 
-    app.use(
-      (
-        err: IErrorResponse,
-        _req: Request,
-        res: Response,
-        next: NextFunction
-      ) => {
-        log.error(err);
-        if (err instanceof CustomError) {
-          return res.status(err.statusCode).json(err.serializeErrors());
-        }
-        next();
+    app.use((err: IErrorResponse, _req: Request, res: Response, next: NextFunction) => {
+      log.error(err);
+      if (err instanceof CustomError) {
+        return res.status(err.statusCode).json(err.serializeErrors());
       }
-    );
+      next();
+    });
   }
 
   private async startServer(app: Application): Promise<void> {
@@ -121,8 +104,8 @@ export class ServerApplication {
     const io: Server = new Server(httpServer, {
       cors: {
         origin: config.CLIENT_URL,
-        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-      },
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
+      }
     });
     const pubClient = createClient({ url: config.REDIS_HOST });
     const subClient = pubClient.duplicate();
